@@ -1,4 +1,5 @@
 
+
 /*
 
 cd C:\Users\MakersBox\Downloads\arduino-1.6.4\hardware\tools\avr\bin
@@ -6,7 +7,7 @@ avrdude -C ..\etc\avrdude.conf -P COM3 -b 19200 -c avrisp -p attiny85 -v -e -U l
 verifying lfuse memory against 0xE2:
 verifying hfuse memory against 0xD7
 verifying efuse memory against 0xFF
- 
+
 Attiny Core:
 https://github.com/SpenceKonde/ATTinyCore
 Board: Attiny 24/44/84
@@ -28,14 +29,10 @@ Clock: 8 MHz (internal)
 */
 
 
-int LEDS[] = {6, 7, 8, 9, 10};
+int LEDS[] = {0, 1, 2, 3, 4};
 
 
 void setup(){
-  #if (ARDUINO)
-    Serial.begin(9600);
-    Serial.println("SMD_heart");
-  #endif
 
 
   // setup LED pind
@@ -44,30 +41,18 @@ void setup(){
   }
   
   // setup sink pins PB0 / PB1 (D0, D1)
-  pinMode(0, OUTPUT);
-  pinMode(1, OUTPUT);
+  pinMode(9, OUTPUT);
+  pinMode(10, OUTPUT);
 
 }
 
 
 void loop(){
-  
-  // sinc pins
-  digitalWrite(0, LOW);
-  digitalWrite(1, LOW);
-
-  for(int LED=0; LED<(sizeof(LEDS)/sizeof(int)); LED++){
-    flash(LEDS[LED]);
-  }  
-
-  for(int LED = (sizeof(LEDS)/sizeof(int))-1; LED >= 0; LED--){
-    flash(LEDS[LED]);
-  } 
 
 
   // source (shows if LED backwards)
-  digitalWrite(0, HIGH);
-  digitalWrite(1, HIGH);
+  digitalWrite(9, HIGH);
+  digitalWrite(10, HIGH);
 
   for(int LED=0; LED<(sizeof(LEDS)/sizeof(int)); LED++){
     flash(LEDS[LED]);
@@ -76,6 +61,25 @@ void loop(){
   for(int LED = (sizeof(LEDS)/sizeof(int))-1; LED >= 0; LED--){
     flash(LEDS[LED]);
   } 
+
+    
+  // sinc pins
+  digitalWrite(9, LOW);
+  digitalWrite(10, LOW);
+
+  while(true){
+
+  for(int LED=0; LED<(sizeof(LEDS)/sizeof(int)); LED++){
+    flash(LEDS[LED]);
+  }  
+
+  for(int LED = (sizeof(LEDS)/sizeof(int))-1; LED >= 0; LED--){
+    flash(LEDS[LED]);
+  } 
+  }
+
+
+
 
 }
 
@@ -88,6 +92,3 @@ void flash(int led){  // psuedo PWM
     delay(3);
   }
 }
-
-
-
